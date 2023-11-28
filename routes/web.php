@@ -16,7 +16,7 @@ Route::get('/logout', function () {
     return redirect()->route('home.index');
 })->name('logout');
 Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
-Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/register', [RegisterController::class, 'register'])->name('register.auth');
 /*
 |--------------------------------------------------------------------------
 | Web Routes
