@@ -19,8 +19,12 @@ Route::get('/logout', function () {
 Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.auth');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
-Route::post('/cart', [CartController::class, 'addToCart'])->name('cart.add');
+
+Route::get('add-to-cart/{id}', [CartController::class,'addToCart'])->name('cart.add');
+Route::get('add-to-cart-ajax/{id}', [CartController::class,'addToCartAjax'])->name('cart.add.ajax');
+
+Route::patch('update-cart', [CartController::class,'update'])->name('cart.update');
+Route::delete('remove-from-cart', [CartController::class,'remove'])->name('cart.remove');
 /*
 |--------------------------------------------------------------------------
 | Web Routes

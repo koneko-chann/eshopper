@@ -118,7 +118,7 @@ $base_url = "http://localhost/test/public";
                 <div class="card-footer d-flex justify-content-between bg-light border">
                     <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
                         Detail</a>
-                    <a href="{{route('cart.add',['id'=>$product['id']])}}" class="btn btn-sm text-dark p-0"><i
+                    <a href="{{route('cart.add',['id'=>$product['id']])}}" class="btn btn-sm text-dark p-0 add-to-cart-btn" ><i
                             class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
                 </div>
             </div>
@@ -174,7 +174,7 @@ $base_url = "http://localhost/test/public";
                 <div class="card-footer d-flex justify-content-between bg-light border">
                     <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
                         Detail</a>
-                    <a href="" class="btn btn-sm text-dark p-0"><i
+                    <a href="{{route('cart.add',['id'=>$product['id']])}}" class="btn btn-sm text-dark p-0"><i
                             class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
                 </div>
             </div>
@@ -186,9 +186,30 @@ $base_url = "http://localhost/test/public";
 
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
-
+{{-- <script>
+    $('.add-to-cart-btn').click(function() {
+    var id = $(this).data('id');
+console.log(id);
+    $.ajax({
+        // url: '/add-to-cart-ajax/' + id,
+        method: 'GET',
+        data: {
+            id: id,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+            alert(response.success);
+            // Update cart count, etc.
+        },
+        error: function(response) {
+            alert(response.error);
+        }
+    });
+});
+</script> --}}
 
 <!-- JavaScript Libraries -->
 @endsection

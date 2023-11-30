@@ -42,38 +42,38 @@
                         </tr>
                     </thead>
                     <tbody class="align-middle">
-                       <form action="" method="post">
+                    
                         @foreach($carts as $item)
-                        <tr >
+                        <tr data-id="{{$item['id']}}" >
                             <td class="align-middle"><img src="{{config('app.base_url').$item->product['feature_image_path']}}" alt="" style="width: 50px;"> {{$item->product->name}}</td>
                             <td class="align-middle">{{number_format($item->product->price)}}</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn quantity" data-cart-id={{$item['id']}}>
+                                    <div class="input-group-btn minus" >
                                         <button class="btn btn-sm btn-primary btn-minus quantity" >
                                         <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary text-center quantity1" data-cart-id={{$item['id']}} value="{{$item->quantity}}">
+                                    <input type="text" class="form-control form-control-sm bg-secondary text-center update-cart"  value="{{$item->quantity}}">
                                     
                                     <div class="input-group-btn" >
-                                        <button class="btn btn-sm btn-primary btn-plus quantity" >
+                                        <button class="btn btn-sm btn-primary btn-plus plus1" >
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </td>
                             <td class="align-middle">{{number_format($item->quantity*$item->product->price)}}</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                            <td class="align-middle"><button class="btn btn-sm btn-primary remove-from-cart"><i class="fa fa-times"></i></button></td>
                         </tr>
                        @endforeach
                     
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-between mt-2">
-<input type="submit" class="btn btn-block btn-primary my-3 py-3 ml-auto" value="Submit" style="height: 70px;width:200px">
+
                 </div>
-            </form>
+         
             </div>
             <div class="col-lg-4">
                 <form class="mb-5" action="">
@@ -189,22 +189,74 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        $('.quantity1').on('change', function() {
-            var cartId = $(this).data('cart-id');
-            var quantity = $(this).val();
+        $(".plus1, .minus").click(function (e) {
+    e.preventDefault();
+    var ele=$(this);
+
+    if ($(this).hasClass('plus1')) {
+       quantity= $(this).parents("tr").find(".update-cart").val();
+        quantity++;
+        
+    }  if ($(this).hasClass('minus')) {
+      quantity=  $(this).parents("tr").find(".update-cart").val();
+       
+    }
+
+console.log(quantity);
+
     
+console.log(ele.parents("tr").attr("data-id"));
+    $.ajax({
+        url: '{{ route('cart.update') }}',
+        method: "patch",
+        data: {
+            _token: '{{ csrf_token() }}', 
+            id: ele.parents("tr").attr("data-id"), 
+            quantity: quantity
+        },
+        success: function (response) {
+            window.location.reload();
+        }
+    });
+});
+         $(".update-cart").change(function (e) {
+        e.preventDefault();
+  
+        var ele = $(this);
+  
+        $.ajax({
+            url: '{{ route('cart.update') }}',
+            method: "patch",
+            data: {
+                _token: '{{ csrf_token() }}', 
+                id: ele.parents("tr").attr("data-id"), 
+                quantity: ele.val()
+            },
+            success: function (response) {
+               window.location.reload();
+            }
+        });
+    });
+       $(".remove-from-cart").click(function (e) {
+        e.preventDefault();
+  
+        var ele = $(this);
+  
+        if(confirm("Are you sure want to remove?")) {
             $.ajax({
-                url: '/cart/' + cartId,
-                method: 'PATCH',
+                url: '{{ route('cart.remove') }}',
+                method: "DELETE",
                 data: {
-                    quantity: quantity,
-                   
+                    _token: '{{ csrf_token() }}', 
+                    id: ele.parents("tr").attr("data-id")
                 },
-                success: function(response) {
-                    location.reload();
+                success: function (response) {
+                    ele.parents("tr").remove();
+                    window.location.reload();
                 }
             });
-        });
+        }
+    });
     </script>
 
 @endsection
