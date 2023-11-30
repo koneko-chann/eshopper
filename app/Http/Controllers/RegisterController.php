@@ -32,7 +32,7 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
        
-
+        $user_role=$user->roles()->attach(2);
         auth()->login($user);
 
         return redirect()->route('home.index');

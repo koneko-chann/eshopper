@@ -18,9 +18,13 @@ class CartController extends Controller
         
         $categories = $this->categories;
         $products =  $this->products;
+        if(auth()->check())
         $carts = auth()->user()->carts;
         //dd($carts);
-       
+       else{
+        $carts = session()->get('cart');
+      
+       }
 
 
         return view('cart.index', compact('carts', 'categories', 'products'));
