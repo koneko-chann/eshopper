@@ -20,9 +20,9 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) { // Update this line
-            $request->session()->regenerate();
+           // $request->session()->regenerate();
             
-            session()->forget('cart');
+           // session()->forget('cart');
             return redirect()->route('home.index');
         }
 

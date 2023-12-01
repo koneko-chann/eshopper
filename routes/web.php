@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DetailController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
@@ -21,10 +22,14 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
 Route::get('add-to-cart/{id}', [CartController::class,'addToCart'])->name('cart.add');
-Route::get('add-to-cart-ajax/{id}', [CartController::class,'addToCartAjax'])->name('cart.add.ajax');
+
 
 Route::patch('update-cart', [CartController::class,'update'])->name('cart.update');
 Route::delete('remove-from-cart', [CartController::class,'remove'])->name('cart.remove');
+Route::get('checkout', [CartController::class,'checkout'])->name('cart.checkout');
+Route::post('checkout', [CartController::class,'checkoutStore'])->name('cart.checkout.store');
+
+Route::get('/shop/{id}', [DetailController::class, 'index'])->name('detail.index'); 
 /*
 |--------------------------------------------------------------------------
 | Web Routes

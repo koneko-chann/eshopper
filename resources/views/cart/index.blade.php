@@ -41,7 +41,7 @@
                             <th>Remove</th>
                         </tr>
                     </thead>
-                    <tbody class="align-middle">
+                    <tbody class="align-middle"  id="cart">
                     @if($carts!=null)
                         @foreach($carts as $item)
                         <tr data-id="{{$item['id']}}" >
@@ -56,8 +56,8 @@
                                     </div>
                                     <input type="text" class="form-control form-control-sm bg-secondary text-center update-cart"  value="{{$item->quantity}}">
                                     
-                                    <div class="input-group-btn" >
-                                        <button class="btn btn-sm btn-primary btn-plus plus1" >
+                                    <div class="input-group-btn plus1" >
+                                        <button class="btn btn-sm btn-primary btn-plus " >
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
@@ -126,7 +126,7 @@ $("tr").each(function() {
         }
     }
 });
-$(".total").text("Total ("+$("tr").length-1+" items):");
+$(".total").text("Total ("+document.querySelectorAll('tr').length-1+" items):");
 $(".subtotal").text(subtotal.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.',','));
 $(".totalPrice").text(subtotal.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.',','));    
 
@@ -137,17 +137,13 @@ $(".totalPrice").text(subtotal.toLocaleString('it-IT', {style : 'currency', curr
 
     if ($(this).hasClass('plus1')) {
        quantity= $(this).parents("tr").find(".update-cart").val();
-        quantity++;
+       
         
     }  if ($(this).hasClass('minus')) {
       quantity=  $(this).parents("tr").find(".update-cart").val();
        
     }
 
-console.log(quantity);
-
-    
-console.log(ele.parents("tr").attr("data-id"));
     $.ajax({
         url: '{{ route('cart.update') }}',
         method: "patch",

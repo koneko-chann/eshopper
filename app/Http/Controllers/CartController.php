@@ -22,6 +22,7 @@ class CartController extends Controller
         $carts = auth()->user()->carts;
         //dd($carts);
        else{
+    
         $carts = session()->get('cart');
       
        }
@@ -63,18 +64,21 @@ class CartController extends Controller
         if (!$product) {
             abort(404);
         }
-    
         $cart = session()->get('cart', []);
         
         session()->put('cart', $cart);
+        
        
         if (auth()->check()) {
             $user = auth()->user();
             $userCart = $user->carts()->firstOrCreate(['product_id' => $id]);
-            $userCart->quantity = $userCart->quantity + 1;
+            $quantity=$request->query('quantity');
+            $userCart->quantity = $userCart->quantity + $quantity;
+           
             $userCart->save();
         }
         else{
+           
             if (isset($cart[$id])) {
                 $cart[$id]['quantity']++;
             } else {
@@ -85,10 +89,11 @@ class CartController extends Controller
                   
                 ];
             }
+          
+
         }
         
-        return redirect()->back()->with('success', 'Product added to cart successfully!');
-
+        return response()->json(['success' => "Thêm vào giỏ hàng thành công"]);
     }
     public function remove(Request $request)
 {
@@ -106,6 +111,6 @@ class CartController extends Controller
         return response()->json(['success' => true]);
     }
 }
-   
+
 }
 

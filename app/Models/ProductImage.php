@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class role_user extends Model
+class ProductImage extends Model
 {
+    protected $table='product_images';
     use HasFactory;
 }

@@ -19,10 +19,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="eshopper/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="{{asset('eshopper/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="eshopper/css/style.css" rel="stylesheet">
+    <link href="{{asset('eshopper/css/style.css')}}" rel="stylesheet">
     @yield('css')
 </head>
 <body>
@@ -33,15 +33,15 @@
 @include('components.footer')
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-<script src="eshopper/lib/easing/easing.min.js"></script>
-<script src="eshopper/lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="{{asset('eshopper/lib/easing/easing.min.js')}}"></script>
+<script src="{{asset('eshopper/lib/owlcarousel/owl.carousel.min.js')}}"></script>
 
 <!-- Contact Javascript File -->
-<script src="eshopper/mail/jqBootstrapValidation.min.js"></script>
-<script src="eshopper/mail/contact.js"></script>
+<script src="{{asset('eshopper/mail/jqBootstrapValidation.min.js')}}"></script>
+<script src="{{asset('eshopper/mail/contact.js')}}"></script>
 
 <!-- Template Javascript -->
-<script src="eshopper/js/main.js"></script>
+<script src="{{asset('eshopper/js/main.js')}}"></script>
 @yield('js')
 </body>
 </html>

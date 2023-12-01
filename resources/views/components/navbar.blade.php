@@ -36,7 +36,7 @@
                     <div class="navbar-nav mr-auto py-0">
                         <a href="{{route('home.index')}}" class="d-flex align-items-center justify-content-center nav-item nav-link{!!url()->current()==route('home.index')?'text-warning':''!!}">Home</a>
                         <a href="{{route('shop.index')}}" class="nav-item nav-link {!!url()->current()==route('shop.index')?'text-warning':''!!}">Shop</a>
-                        <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
+                       
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Pages</a>
                             <div class="dropdown-menu rounded-0 m-0">

@@ -11,4 +11,8 @@ class Product extends Model
     use HasFactory,SoftDeletes;
     protected $table='products';
     protected $guarded = [];    
+    public function productImages()
+    {
+        return $this->hasMany(ProductImage::class,'product_id');
+    }
 }
