@@ -116,10 +116,10 @@ $base_url = "http://localhost/test/public";
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between bg-light border">
-                    <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
+                    <a href="{{route('detail.index',['id'=>$product['id']])}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
                         Detail</a>
-                    <a href="{{route('cart.add',['id'=>$product['id'],'quantity'=>1])}}" class="btn btn-sm text-dark p-0 add-to-cart-btn" ><i
-                            class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                    <span data-url="{{ route('cart.add', ['id' => $product['id']]) }}" class="btn btn-sm text-dark p-0 add-to-cart-btn" ><i
+                            class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</span>
                 </div>
             </div>
         </div>
@@ -174,8 +174,8 @@ $base_url = "http://localhost/test/public";
                 <div class="card-footer d-flex justify-content-between bg-light border">
                     <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
                         Detail</a>
-                    <a href="{{route('cart.add',['id'=>$product['id']])}}" class="btn btn-sm text-dark p-0"><i
-                            class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                    <span data-url="{{ route('cart.add', ['id' => $product['id']]) }}" class="btn btn-sm text-dark p-0"><i
+                            class="fas fa-shopping-cart text-primary mr-1 add-to-cart-btn"></i>Add To Cart</span>
                 </div>
             </div>
         </div>
@@ -188,28 +188,33 @@ $base_url = "http://localhost/test/public";
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <script>
+   $('.add-to-cart-btn').click(function(e) {
+    e.preventDefault();
 
-{{-- <script>
-    $('.add-to-cart-btn').click(function() {
-    var id = $(this).data('id');
-console.log(id);
+    let quantity = 1;
+    let url = $(this).data('url') + '?quantity=' + quantity;
+
     $.ajax({
-        // url: '/add-to-cart-ajax/' + id,
-        method: 'GET',
-        data: {
-            id: id,
-            _token: '{{ csrf_token() }}'
+        url: url,
+        type: 'GET',
+        success: function(data) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                width: 300,
+                height: 50,
+                title: "Added to cart",
+                showConfirmButton: false,
+                timer: 1500
+            });
         },
-        success: function(response) {
-            alert(response.success);
-            // Update cart count, etc.
-        },
-        error: function(response) {
-            alert(response.error);
+        error: function(error) {
+            console.error('Error:', error);
         }
     });
 });
-</script> --}}
-
+</script>
 <!-- JavaScript Libraries -->
 @endsection

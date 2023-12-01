@@ -126,7 +126,7 @@ $("tr").each(function() {
         }
     }
 });
-$(".total").text("Total ("+document.querySelectorAll('tr').length-1+" items):");
+$(".total").text("Total ("+parseInt(document.querySelectorAll('tr').length-1)+" items):");
 $(".subtotal").text(subtotal.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.',','));
 $(".totalPrice").text(subtotal.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.',','));    
 
