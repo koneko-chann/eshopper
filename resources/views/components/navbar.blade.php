@@ -5,18 +5,17 @@
                 <h6 class="m-0">Categories</h6>
                 <i class="fa fa-angle-down text-dark"></i>
             </a>
-            <nav class="position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light collapse show " id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
+            <nav class="{{url()->current()==route('home.index')?'':'collapse'}} position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
                 <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
                     @foreach($categories as $category)
-                <div class="nav-item {{count($category->categoryChildren)>0?'dropdown':''}}">
-                    <a href="#" class="nav-link" data-toggle="dropdown">
+                <div class="nav-item dropdown">
+                    <a href="{{route('shop.category',['id'=>$category['id']])}}" class="nav-link" data-toggle="dropdown">
                         {{$category['name']}}
                         {!! count($category->categoryChildren) > 0 ? ' <i class="fa fa-angle-down float-right mt-1"></i>' : '' !!}
                     </a>
                     <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
                         @foreach($category->categoryChildren as $child)
-
-                        <a href="" class="dropdown-item">{{$child['name']}}</a>
+                        <a href="{{route('shop.category',['id'=>$child['id']])}}" class="dropdown-item">{{$child['name']}}</a>
                         @endforeach
                     </div>
                 </div>
