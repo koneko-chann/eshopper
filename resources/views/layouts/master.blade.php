@@ -26,7 +26,32 @@
     @yield('css')
 </head>
 <body>
-
+    @if (session('success'))
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        swal({
+            title: "Success!",
+            text: "{{ session('success') }}",
+            icon: "success",
+            position: 'top-end',
+            timer: 3000,
+            buttons: false,
+        });
+    </script>
+@endif
+@if (session('error'))
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        swal({
+            title: "Error!",
+            text: "{{ session('error') }}",
+            icon: "error",
+            position: 'top-end',
+            timer: 3000,
+            buttons: false,
+        });
+    </script>
+@endif
 @include('components.header')
 @yield('navbar')
 @yield('content')

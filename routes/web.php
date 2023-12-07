@@ -9,6 +9,7 @@ use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
@@ -42,6 +43,9 @@ Route::get('/checkout/success', function () {
 Route::get('/404', function () {
     return view('404.404');
 })->name('404');
+
+Route::get('/profile', [UserController::class, 'index'])->name('profile.index')->middleware('auth');
+Route::post('/profile', [UserController::class, 'update'])->name('profile.update')->middleware('auth');
 /*
 |--------------------------------------------------------------------------
 | Web Routes

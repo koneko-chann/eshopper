@@ -49,8 +49,8 @@
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="true">{{ Auth::user()->name }}</a>
                                 <div class="dropdown-menu rounded-0 m-0">
-                                    <a href="" class="dropdown-item">Profile</a>
-                                    <a href="" class="dropdown-item">Cart</a>
+                                    <a href="{{route('profile.index')}}" class="dropdown-item">Profile</a>
+                                    <a href="{{route('cart.index')}}" class="dropdown-item">Cart</a>
                                 </div>
                             </div>
                             <a href="{{route('logout')}}" class="nav-item nav-link">Logout</a>

@@ -8,9 +8,6 @@ $base_url = "http://localhost/test/public";
 @endsection
 
 @section('content')
-@section('collapse')
-collapse
-@endsection
 
 
 <!-- Navbar Start -->
