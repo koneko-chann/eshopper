@@ -234,6 +234,18 @@
   
        
   document.getElementById('add').addEventListener('click', function(e) {
+    if({{ json_encode(Auth::check()) }} == false){
+        Swal.fire({
+            position: "top-end",
+            icon: "error",
+            width: 300,
+            height: 50,
+            title: "Please login to add to cart",
+            showConfirmButton: false,
+            timer: 1500
+        });
+            return;
+    }
     e.preventDefault();
 
     let quantity = document.getElementById('quantity1').value;

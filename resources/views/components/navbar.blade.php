@@ -1,7 +1,7 @@
 <div class="container-fluid" style="z-index: 0">
     <div class="row border-top px-xl-5">
         <div class="col-lg-3 d-none d-lg-block ">
-            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;" aria-expanded="true">
+            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;" aria-expanded="">
                 <h6 class="m-0">Categories</h6>
                 <i class="fa fa-angle-down text-dark"></i>
             </a>
@@ -9,15 +9,11 @@
                 <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
                     @foreach($categories as $category)
                 <div class="nav-item dropdown">
-                    <a href="{{route('shop.category',['id'=>$category['id']])}}" class="nav-link" data-toggle="dropdown">
+                    <a href="{{route('shop.category',['id'=>$category['id']])}}" class="nav-link">
                         {{$category['name']}}
                         {!! count($category->categoryChildren) > 0 ? ' <i class="fa fa-angle-down float-right mt-1"></i>' : '' !!}
                     </a>
-                    <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                        @foreach($category->categoryChildren as $child)
-                        <a href="{{route('shop.category',['id'=>$child['id']])}}" class="dropdown-item">{{$child['name']}}</a>
-                        @endforeach
-                    </div>
+            
                 </div>
                 @endforeach
                 </div>
@@ -31,10 +27,10 @@
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="{{route('home.index')}}" class="d-flex align-items-center justify-content-center nav-item nav-link{!!url()->current()==route('home.index')?'text-warning':''!!}">Home</a>
-                        <a href="{{route('shop.index')}}" class="nav-item nav-link {!!url()->current()==route('shop.index')?'text-warning':''!!}">Shop</a>
+                        <a href="{{route('home.index')}}" class="d-flex align-items-center justify-content-center nav-item nav-link">Home</a>
+                        <a href="{{route('shop.index')}}" class="nav-item nav-link">Shop</a>
                        
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Pages</a>

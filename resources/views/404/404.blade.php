@@ -1,3 +1,6 @@
+@php
+   $categories = DB::table('categories')->all();
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>

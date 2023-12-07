@@ -8,7 +8,9 @@ $base_url = "http://localhost/test/public";
 @endsection
 
 @section('content')
-
+@section('collapse')
+collapse
+@endsection
 
 
 <!-- Navbar Start -->
@@ -191,6 +193,18 @@ $base_url = "http://localhost/test/public";
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  <script>
    $('.add-to-cart-btn').click(function(e) {
+    if({{ json_encode(Auth::check()) }} == false){
+        Swal.fire({
+            position: "top-end",
+            icon: "error",
+            width: 300,
+            height: 50,
+            title: "Please login to add to cart",
+            showConfirmButton: false,
+            timer: 1500
+        });
+            return;
+    }
     e.preventDefault();
 
     let quantity = 1;

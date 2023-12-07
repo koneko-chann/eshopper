@@ -12,6 +12,7 @@ class CheckoutController extends Controller
     public function index(){
         $categories = \App\Models\Category::all();
         $cart=Cart::where('user_id',auth()->id())->get();  
+        
         return view('checkout.index',compact('categories','cart'));
     }
     public function store(Request $request){

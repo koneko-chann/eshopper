@@ -20,22 +20,21 @@ Route::get('/logout', function () {
 })->name('logout');
 Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.auth');
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
 
-Route::get('add-to-cart/{id}', [CartController::class,'addToCart'])->name('cart.add');
+Route::get('add-to-cart/{id}', [CartController::class,'addToCart'])->name('cart.add')->middleware('auth');
 
 
 Route::patch('update-cart', [CartController::class,'update'])->name('cart.update');
 Route::delete('remove-from-cart', [CartController::class,'remove'])->name('cart.remove');
-Route::get('checkout', [CartController::class,'checkout'])->name('cart.checkout');
-Route::post('checkout', [CartController::class,'checkoutStore'])->name('cart.checkout.store');
+
 
 Route::get('/shop/search', [ShopController::class, 'search'])->name('shop.search');
 Route::get('/shop/category/{id}', [ShopController::class, 'categoryProducts'])->name('shop.category');
 Route::get('/shop/{id}', [DetailController::class, 'index'])->name('detail.index'); 
 
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index')->middleware('auth');
+Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store')->middleware('auth');
 
 Route::get('/checkout/success', function () {
     return view('checkout.success');
