@@ -3,7 +3,7 @@
 <title>Shop page</title>
 @endsection
 @section('css')
-<script src="https://cdn.tailwindcss.com"></script>
+
 @endsection
 @section('content')
 
@@ -232,6 +232,18 @@ window.onload = function() {
         document.getElementById('price-5').checked = true;
     }
 }
+$(document).ready(function() {
+    // Check the saved state
+    if (localStorage.getItem('isNavbarVerticalExpanded') === 'true') {
+        $('#navbar-vertical').addClass('show');
+    }
 
+    // Save the state on toggle
+    $('[data-toggle="collapse"]').on('click', function() {
+        localStorage.setItem('isNavbarVerticalExpanded', $('#navbar-vertical').hasClass('show'));
+    });
+});
 </script>
+
+
 @endsection
