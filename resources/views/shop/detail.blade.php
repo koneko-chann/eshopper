@@ -2,6 +2,13 @@
 @section('title')
 <title>Detail</title>
 @endsection
+@section('css')
+@endsection
+@section('js')
+<script>
+
+</script>
+@endsection
 @section('content')
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
@@ -48,7 +55,10 @@
                     <small class="fas fa-star-half-alt"></small>
                     <small class="far fa-star"></small>
                 </div>
-                <small class="pt-1">(50 Reviews)</small>
+
+                {{-- Test review --}}
+              
+                {{-- End test review --}}
             </div>
             <h3 class="font-weight-semi-bold mb-4">{!!number_format($product['price'])!!} đ</h3>
             <p class="mb-4">{!!$product['description']!!}</p>
