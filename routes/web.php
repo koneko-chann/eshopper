@@ -46,6 +46,8 @@ Route::get('/404', function () {
 
 Route::get('/profile', [UserController::class, 'index'])->name('profile.index')->middleware('auth');
 Route::post('/profile', [UserController::class, 'update'])->name('profile.update')->middleware('auth');
+
+Route::get('/profile/orders', [UserController::class, 'orders'])->name('profile.orders')->middleware('auth');
 /*
 |--------------------------------------------------------------------------
 | Web Routes

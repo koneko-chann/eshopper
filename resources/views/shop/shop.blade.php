@@ -1,3 +1,10 @@
+<?php
+function randomFloat($min = 0, $max = 1) {
+    return $min + mt_rand() / mt_getrandmax() * ($max - $min);
+}
+
+$randomFloat = randomFloat(1.1, 1.5);
+?>
 @extends('layouts.master')
 @section('title')
 <title>Shop page</title>
@@ -105,7 +112,7 @@
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 class="text-truncate mb-3">{{$product['name']}}</h6>
                             <div class="d-flex justify-content-center">
-                                <h6>{{$product['price']}}</h6><h6 class="text-muted ml-2"><del>{{$product['price']}}</del></h6>
+                                <h6>{{number_format($product['price'])}}</h6><h6 class="text-muted ml-2"><del>{{number_format($product['price']*randomFloat(1.1,1.5))}}</del></h6>
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
@@ -232,17 +239,7 @@ window.onload = function() {
         document.getElementById('price-5').checked = true;
     }
 }
-$(document).ready(function() {
-    // Check the saved state
-    if (localStorage.getItem('isNavbarVerticalExpanded') === 'true') {
-        $('#navbar-vertical').addClass('show');
-    }
 
-    // Save the state on toggle
-    $('[data-toggle="collapse"]').on('click', function() {
-        localStorage.setItem('isNavbarVerticalExpanded', $('#navbar-vertical').hasClass('show'));
-    });
-});
 </script>
 
 

@@ -51,6 +51,7 @@
                                 <div class="dropdown-menu rounded-0 m-0">
                                     <a href="{{route('profile.index')}}" class="dropdown-item">Profile</a>
                                     <a href="{{route('cart.index')}}" class="dropdown-item">Cart</a>
+                                    <a href="{{route('profile.orders')}}" class="dropdown-item">Orders</a>
                                 </div>
                             </div>
                             <a href="{{route('logout')}}" class="nav-item nav-link">Logout</a>

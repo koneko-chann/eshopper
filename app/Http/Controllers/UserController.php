@@ -25,4 +25,11 @@ class UserController extends Controller
 
         return redirect()->back()->with('success','Cập nhật thông tin thành công');
     }
+    public function orders(){
+        $categories = Category::all();
+        $user = auth()->user();
+        $orders = $user->orders->take(10);
+        return view('profile.orders',compact('categories','user','orders'));
+    }
+
 }
