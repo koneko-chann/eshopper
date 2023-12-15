@@ -49,22 +49,22 @@ $randomFloat = randomFloat(1.1, 1.5);
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                         <input type="checkbox" class="custom-control-input" id="price-2">
-                        <label class="custom-control-label" for="price-2">$100 - $200</label>
+                        <label class="custom-control-label" for="price-2">$500000 - $1500000</label>
                         <span class="badge border font-weight-normal">295</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                         <input type="checkbox" class="custom-control-input" id="price-3">
-                        <label class="custom-control-label" for="price-3">$200 - $300</label>
+                        <label class="custom-control-label" for="price-3">$1500000 - $5000000</label>
                         <span class="badge border font-weight-normal">246</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                         <input type="checkbox" class="custom-control-input" id="price-4">
-                        <label class="custom-control-label" for="price-4">$300 - $400</label>
+                        <label class="custom-control-label" for="price-4">$5000000 - $10000000</label>
                         <span class="badge border font-weight-normal">145</span>
                     </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
                         <input type="checkbox" class="custom-control-input" id="price-5">
-                        <label class="custom-control-label" for="price-5">$400 - $500</label>
+                        <label class="custom-control-label" for="price-5">$10000000 - $20000000</label>
                         <span class="badge border font-weight-normal">168</span>
                     </div>
                 </form>
@@ -229,13 +229,13 @@ window.onload = function() {
 
     if (minPrice == 0 && maxPrice == 500000) {
         document.getElementById('price-1').checked = true;
-    } else if (minPrice == 100 && maxPrice == 200) {
+    } else if (minPrice == 500000 && maxPrice == 1500000) {
         document.getElementById('price-2').checked = true;
-    } else if (minPrice == 200 && maxPrice == 300) {
+    } else if (minPrice == 1500000 && maxPrice == 5000000) {
         document.getElementById('price-3').checked = true;
-    } else if (minPrice == 300 && maxPrice == 400) {
+    } else if (minPrice == 5000000 && maxPrice == 10000000) {
         document.getElementById('price-4').checked = true;
-    } else if (minPrice == 400 && maxPrice == 500) {
+    } else if (minPrice == 10000000 && maxPrice == 20000000) {
         document.getElementById('price-5').checked = true;
     }
 }

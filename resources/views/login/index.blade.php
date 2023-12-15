@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-<title>Login sdfgsdf</title>
+<title>Login</title>
 @endsection
 @section('navbar')
 @endsection

@@ -55,15 +55,16 @@ $base_url = "http://localhost/test/public";
 <div class="container-fluid pt-5">
     <div class="row px-xl-5 pb-3">
         @foreach($categoriesLimit as $category)
+        <a href="{{route('shop.category',['id'=>$category['id']])}}">
         <div class="col-lg-4 col-md-6 pb-1">
             <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
                 <p class="text-right">{!! count($category->products) !!} Products</p>
-                <a href="{{route('shop.category',['id'=>$category['id']])}}" class="cat-img position-relative overflow-hidden mb-3">
-                    <img class="img-fluid" src="eshopper/img/cat-1.jpg" alt="">
+                <a href="" class="cat-img position-relative overflow-hidden mb-3">
                 </a>
-                <h5 class="font-weight-semi-bold m-0">{{$category['name']}}</h5>
+                <h5 class="font-weight-semi-bold m-0 " style="padding-bot: 30px;">{{$category['name']}}</h5>
             </div>
         </div>
+        </a>
         @endforeach
     </div>
 </div>
@@ -72,7 +73,7 @@ $base_url = "http://localhost/test/public";
     <div class="row px-xl-5">
         <div class="col-md-6 pb-4">
             <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
-                <img src="eshopper/img/offer-1.png" alt="">
+                <img src="{{$base_url.$products[2]->feature_image_path}}" alt="">
                 <div class="position-relative" style="z-index: 1;">
                     <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
                     <h1 class="mb-4 font-weight-semi-bold">Spring Collection</h1>
@@ -82,7 +83,7 @@ $base_url = "http://localhost/test/public";
         </div>
         <div class="col-md-6 pb-4">
             <div class="position-relative bg-secondary text-center text-md-left text-white mb-2 py-5 px-5">
-                <img src="eshopper/img/offer-2.png" alt="">
+                <img src="{{$base_url.$products[1]->feature_image_path}}" alt="">
                 <div class="position-relative" style="z-index: 1;">
                     <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
                     <h1 class="mb-4 font-weight-semi-bold">Winter Collection</h1>
@@ -171,10 +172,10 @@ $base_url = "http://localhost/test/public";
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between bg-light border">
-                    <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
+                    <a href="{{route('detail.index',['id'=>$product['id']])}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
                         Detail</a>
-                    <span data-url="{{ route('cart.add', ['id' => $product['id']]) }}" class="btn btn-sm text-dark p-0"><i
-                            class="fas fa-shopping-cart text-primary mr-1 add-to-cart-btn"></i>Add To Cart</span>
+                    <span data-url="{{ route('cart.add', ['id' => $product['id']]) }}" class="btn btn-sm text-dark p-0 add-to-cart-btn"><i
+                            class="fas fa-shopping-cart text-primary mr-1 "></i>Add To Cart</span>
                 </div>
             </div>
         </div>
@@ -189,7 +190,7 @@ $base_url = "http://localhost/test/public";
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  <script>
-   $('.add-to-cart-btn').click(function(e) {
+   $('.add-to-cart-btn',).click(function(e) {
     if({{ json_encode(Auth::check()) }} == false){
         Swal.fire({
             position: "top-end",

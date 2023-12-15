@@ -1,6 +1,7 @@
 @php
 
 $base_url = "http://localhost/test/public";
+
 @endphp
 <section id="slider">
     <div id="header-carousel" class="carousel slide" data-ride="carousel">
