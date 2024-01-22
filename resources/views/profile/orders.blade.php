@@ -33,28 +33,45 @@
                         <th>Payment Method</th>
                         <th>Status</th>
                         <th>Created at</th>
+                        <th>Rate</th>
                     </tr>
                 </thead>
                 <tbody class="align-middle"  id="cart">
-                @if($orders!=null)
-                @foreach($orders as $order)
-                @foreach($order->orderItems as $item)
-                    <tr style="color: black">
-                        <td class="align-middle"><img src="{{config('app.base_url').$item->product['feature_image_path']}}" alt="" style="width: 50px;">{{$item->product['name']}}</td>
-                        <td class="align-middle">{{number_format($item['price'])}}</td>
-                        <td class="align-middle">{{$item['quantity']}}</td>
-                        <td class="align-middle">{{number_format($order['total_price'])}}</td>
-                        <td class="align-middle">{{$order['first_name'].' '.$order['last_name']}}</td>
-                        <td class="align-middle">{{$order['phone_number']}}</td>
-                        <td class="align-middle">{{$order['address']}}</td>
-                        <td class="align-middle">{{$order['payment_method']}}</td>
-                        <td class="align-middle">{{$order['status']==0?'Failed':($order['status']==1?'Pending':($order['status']==3?'Processing':'Done'))}}</td>
-                        <td class="align-middle">{{$order['created_at']}}</td>
-                    </tr>
-                 @endforeach
+                    @if($orders)
+                    @foreach($orders as $order)
+                        @foreach($order->orderItems as $item)
+                            @php
+                                $product = $item->product;
+                                $status = $order['status'];
+                            @endphp
+                            <tr style="color: black">
+                                <td class="align-middle">
+                                    <img src="{{ config('app.base_url') . $product['feature_image_path'] }}" alt="" style="width: 50px;">
+                                    <a href="{{ route('detail.index', ['id' => $product['id']]) }}">{{ $product['name'] }}</a>
+                                </td>
+                                <td class="align-middle">{{ number_format($item['price']) }}</td>
+                                <td class="align-middle">{{ $item['quantity'] }}</td>
+                                <td class="align-middle">{{ number_format($order['total_price']) }}</td>
+                                <td class="align-middle">{{ $order['first_name'] . ' ' . $order['last_name'] }}</td>
+                                <td class="align-middle">{{ $order['phone_number'] }}</td>
+                                <td class="align-middle">{{ $order['address'] }}</td>
+                                <td class="align-middle">{{ $order['payment_method'] }}</td>
+                                <td class="align-middle">{{ $status == 0 ? 'Failed' : ($status == 1 ? 'Processing' : ($status == 3 ? 'Rated' : 'Done')) }}</td>
+                                <td class="align-middle">{{ $order['created_at'] }}</td>
+                                <td class="align-middle">
+                                    <button type="button" class="btn btn-info" 
+                                        @if (! $item['comment'] && $status == 2)
+                                            onclick="window.location='{{ route('rate.index', ['id' => $order['id'], 'product_id' => $product['id']]) }}'"
+                                        @else
+                                            disabled
+                                        @endif>
+                                        {{ $item['comment'] ? 'Rated' : 'Rate' }}
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
                     @endforeach
-                    @endif  
-               
+                @endif
                 </tbody>
             </table>
          

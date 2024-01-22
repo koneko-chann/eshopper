@@ -36,7 +36,7 @@ $randomFloat = randomFloat(1.1, 1.5);
                 <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
                 <form id="price-filter-form">
                     <input type="hidden" id="min-price" name="min_price">
-    <input type="hidden" id="max-price" name="max_price">
+                    <input type="hidden" id="max-price" name="max_price">
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                         <input type="checkbox" class="custom-control-input" id="price-all" {{ request()->has('min_price') && request()->filled('min_price') ? '' : 'checked' }}>
                         <label class="custom-control-label" for="price-all">All price</label>

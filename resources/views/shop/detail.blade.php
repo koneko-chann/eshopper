@@ -3,6 +3,81 @@
 <title>Detail</title>
 @endsection
 @section('css')
+<style>
+    .user-rate {
+        justify-content: center;
+        align-items: center;
+        margin-left: 50%;
+        margin-bottom: 5px;
+        padding-bottom: 10px;
+    }
+    .heading {
+  font-size: 25px;
+  margin-right: 25px;
+}
+
+.fa {
+  font-size: 25px;
+}
+
+.fa1{
+    color: orange;
+}
+.checked {
+  color: orange;
+}
+
+/* Three column layout */
+.side {
+  float: left;
+  width: 15%;
+  margin-top: 10px;
+}
+
+.middle {
+  float: left;
+  width: 70%;
+  margin-top: 10px;
+}
+
+/* Place text to the right */
+.right {
+  text-align: right;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* The bar container */
+.bar-container {
+  width: 100%;
+  background-color: #f1f1f1;
+  text-align: center;
+  color: white;
+}
+
+/* Individual bars */
+.bar-5 { height: 18px; background-color: #04AA6D;}
+.bar-4 { height: 18px; background-color: #2196F3;}
+.bar-3 {height: 18px; background-color: #00bcd4;}
+.bar-2 { height: 18px; background-color: #ff9800;}
+.bar-1 {height: 18px; background-color: #f44336;}
+
+/* Responsive layout - make the columns stack on top of each other instead of next to each other */
+@media (max-width: 400px) {
+  .side, .middle {
+    width: 100%;
+  }
+  /* Hide the right column on small screens */
+  .right {
+    display: none;
+  }
+}
+</style>
 @endsection
 @section('js')
 <script>
@@ -10,6 +85,23 @@
 </script>
 @endsection
 @section('content')
+@php
+$rate = 0;
+$count = 0;
+foreach($comments as $comment) {
+    $rate += $comment->rate;
+    $count++;
+}
+if ($count > 0) {
+    $rate = $rate / $count;
+}
+$rateCounts = array_fill(1, 5, 0);
+foreach($comments as $comment) {
+    if ($comment->rate >= 1 && $comment->rate <= 5) {
+        $rateCounts[$comment->rate]++;
+    }
+}
+@endphp
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
         <h1 class="font-weight-semi-bold text-uppercase mb-3">Shop Detail</h1>
@@ -20,10 +112,6 @@
         </div>
     </div>
 </div>
-<!-- Page Header End -->
-
-
-<!-- Shop Detail Start -->
 <div class="container-fluid py-5">
     <div class="row px-xl-5">
         <div class="col-lg-5 pb-5">
@@ -49,37 +137,25 @@
             <h3 class="font-weight-semi-bold">{!!$product['name']!!}</h3>
             <div class="d-flex mb-3">
                 <div class="text-primary mr-2">
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star"></small>
-                    <small class="fas fa-star-half-alt"></small>
-                    <small class="far fa-star"></small>
+                    @for($i=1;$i<=5;$i++)
+                    @if($i <= (int)$rate)
+                    <i class="fas fa-star"></i>
+                @elseif($i - $rate > 0 && $i - $rate < 1)
+                    <i class="fas fa-star-half-alt"></i>
+                @else
+                    <i class="far fa-star"></i>
+                @endif
+                    
+                    @endfor
                 </div>
-
-                {{-- Test review --}}
-              
-                {{-- End test review --}}
             </div>
             <h3 class="font-weight-semi-bold mb-4">{!!number_format($product['price'])!!} đ</h3>
             <p class="mb-4">{!!$product['description']!!}</p>
             <div class="d-flex mb-3">
-                {{-- <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
-                <form>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="size-1" name="size">
-                        <label class="custom-control-label" for="size-1">XS</label>
-                    </div>
-                </form> --}}
+            
             </div>
             <div class="d-flex mb-4">
-                {{-- <p class="text-dark font-weight-medium mb-0 mr-3">Colors:</p>
-                <form>
-                    <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" id="color-1" name="color">
-                        <label class="custom-control-label" for="color-1">Black</label>
-                    </div>
-                    
-                </form> --}}
+              
             </div>
             <div class="d-flex align-items-center mb-4 pt-2">
                 <div  class="input-group  mr-3" style="width: 130px;">
@@ -138,53 +214,49 @@
                 <div class="tab-pane fade" id="tab-pane-3">
                     <div class="row">
                         <div class="col-md-6">
-                            <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
+                            <h4 class="mb-4">{{count($comments)}} review for "{{$product['name']}}"</h4>
+                            <div class="user-rate">
+                                <span class="heading">User Rating</span>
+                              
+                               @for($i=1;$i<=5;$i++)
+                                    <span class="fa fa-star{{($i-$rate>0 && $i - $rate < 1)?'-half-alt fa1':''}} {{$rate>=$i?'checked':''}} "></span>
+                                @endfor
+                                <p>{{$rate}} average based on {{count($comments)}} reviews.</p>
+                                <hr style="border:3px solid #f1f1f1">
+
+                                <div class="row">
+                                    @for($i = 5; $i >= 1; $i--)
+                                        <div class="side">
+                                            <div>{{ $i}} <i class="fas fa-star ml-2"></i></div>
+                                        </div>
+                                        <div class="middle">
+                                            <div class="bar-container">
+                                                <div class="bar-{{ $i }}" style="width:{{$count>0?$rateCounts[$i]/$count*100:0}}%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="side right">
+                                            <div>{{ $rateCounts[$i]<=1?$rateCounts[$i].' rate':$rateCounts[$i].' rates' }}</div>
+                                        </div>
+                                    @endfor
+                                </div>
+                            </div>
+                            @if($comments)
+                            @foreach($comments as $comment )
+                      
                             <div class="media mb-4">
-                                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                 <div class="media-body">
-                                    <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                    <div class="text-primary mb-2">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                        <i class="far fa-star"></i>
+                                    <h6>{{$comment->name}}<small> - <i>{{ \Carbon\Carbon::parse($comment->comment_time)->format('d-m-Y') }}</i></small></h6>                                    <div class="text-primary mb-2">
+                                        @for($i=1;$i<=$comment->rate;$i++)
+                                            <i class="fas fa-star"></i>
+                                        @endfor
                                     </div>
-                                    <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                    <p>{{$comment->comment}}</p>
                                 </div>
                             </div>
+                          @endforeach
+                          @endif
                         </div>
-                        <div class="col-md-6">
-                            <h4 class="mb-4">Leave a review</h4>
-                            <small>Your email address will not be published. Required fields are marked *</small>
-                            <div class="d-flex my-3">
-                                <p class="mb-0 mr-2">Your Rating * :</p>
-                                <div class="text-primary">
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </div>
-                            </div>
-                            <form>
-                                <div class="form-group">
-                                    <label for="message">Your Review *</label>
-                                    <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Your Name *</label>
-                                    <input type="text" class="form-control" id="name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Your Email *</label>
-                                    <input type="email" class="form-control" id="email">
-                                </div>
-                                <div class="form-group mb-0">
-                                    <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-                                </div>
-                            </form>
-                        </div>
+                    
                     </div>
                 </div>
             </div>
