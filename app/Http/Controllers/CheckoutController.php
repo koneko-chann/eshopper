@@ -10,22 +10,23 @@ use Illuminate\Support\Facades\DB;
 class CheckoutController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
         $categories = \App\Models\Category::all();
-        $cart = Cart::where('user_id', auth()->id())->get();
-        if ($cart->count() == 0) {
-            return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn đang trống,hãy chọn một vài sản phấm');
-        }
-        return view('checkout.index', compact('categories', 'cart'));
+    $ids = explode(',', $request->ids); // convert ids string to array
+    $cart = Cart::where('user_id', auth()->id())->whereIn('id', $ids)->get();
+
+    if ($cart->count() == 0) {
+        return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn đang trống,hãy chọn một vài sản phấm');
     }
-    public function store(Request $request)
+    return view('checkout.index', compact('categories', 'cart'));
+    }
+    public function store(Request $request,$ids)
     {
         $categories = \App\Models\Category::all();
         DB::beginTransaction();
-
-        $cart = Cart::where('user_id', auth()->id())->get();
-
+        $ids = explode(',', $ids);
+        $cart = Cart::where('user_id', auth()->id())->whereIn('id',$ids)->get();
         $totalPrice = 0;
         foreach ($cart as $item) {
             $totalPrice += $item->product->price * $item->quantity;
@@ -33,7 +34,6 @@ class CheckoutController extends Controller
         // add to orders table
         $order = [
             'user_id' => auth()->id(),
-
             'total_price' => $totalPrice,
             'payment_method' => 'cash',
             'first_name' => $request->first_name,
@@ -42,17 +42,13 @@ class CheckoutController extends Controller
             'phone_number' => $request->phone_number,
         ];
         $order = Order::create($order);
-
-
-
         foreach ($cart as $c) {
-            //add items to order_items table
+            
             $order->orderItems()->create([
                 'product_id' => $c->product_id,
                 'quantity' => $c->quantity,
                 'price' => $c->product->price,
             ]);
-
             $c->delete();
         }
         DB::commit();

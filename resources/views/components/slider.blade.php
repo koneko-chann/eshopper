@@ -3,6 +3,7 @@
 $base_url = "http://localhost/test/public";
 
 @endphp
+@if(count($sliders) > 0)
 <section id="slider">
     <div id="header-carousel" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner" style="z-index: auto">
@@ -32,4 +33,6 @@ $base_url = "http://localhost/test/public";
             </div>
         </a>
     </div>
+
 </section>
+@endif

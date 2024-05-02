@@ -92,8 +92,9 @@ class CartController extends Controller
           
 
         }
+        $cartCount=count(auth()->user()->carts);
         
-        return response()->json(['success' => "Thêm vào giỏ hàng thành công"]);
+        return response()->json(['success' => "Thêm vào giỏ hàng thành công",'cartCount'=>$cartCount]);
     }
     public function remove(Request $request)
 {

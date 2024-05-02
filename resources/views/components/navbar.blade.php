@@ -39,6 +39,8 @@
                                 <a href="{{route('checkout.index')}}" class="dropdown-item">Checkout</a>
                             </div>
                         </div>
+                        <a href="{{route('flashsales.index')}}" class="nav-item nav-link">Flashsales</a>
+
                         <a href="contact.html" class="nav-item nav-link">Contact</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0">
@@ -60,7 +62,6 @@
                 </div>
             </nav>
         @yield('slider')
-
         </div>
     </div>
 </div>

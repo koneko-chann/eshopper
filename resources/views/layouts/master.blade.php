@@ -26,6 +26,10 @@
     @yield('css')
 </head>
 <body>
+    @php
+    $categories = \App\Models\Category::all();
+    @endphp
+    
     @if (session('success'))
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>

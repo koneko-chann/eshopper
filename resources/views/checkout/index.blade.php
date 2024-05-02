@@ -98,7 +98,7 @@ $(document).ready(function() {
 
 <!-- Checkout Start -->
 <div class="container-fluid pt-5">
-    <form action="{{route('checkout.store')}}" method="POST">
+    <form action="{{route('checkout.store',['ids'=>request()->query('ids')])}}" method="POST">
     @csrf
     <div class="row px-xl-5">
         <div class="col-lg-8">

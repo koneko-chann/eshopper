@@ -3,17 +3,7 @@
 <title>Cart</title>
 @endsection 
 @section('content')
-    <!-- Topbar Start -->
    
-    <!-- Topbar End -->
-
-
-    <!-- Navbar Start -->
-  
-    <!-- Navbar End -->
-
-
-    <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">Shopping Cart</h1>
@@ -34,6 +24,7 @@
                 <table class="table table-bordered text-center mb-0">
                     <thead class="bg-secondary text-dark">
                         <tr>
+                            <th>Check all<input type="checkbox" name="chekall"></th>
                             <th>Products</th>
                             <th>Price</th>
                             <th>Quantity</th>
@@ -45,7 +36,8 @@
                     @if($carts!=null)
                         @foreach($carts as $item)
                         <tr data-id="{{$item['id']}}" >
-                            <td class="align-middle"><img src="{{config('app.base_url').$item->product['feature_image_path']}}" alt="" style="width: 50px;"> {{$item->product->name}}</td>
+                            <td class="align-middle"><input type="checkbox" name="checkedtobuy"></td>
+                            <td class="align-middle"><img src="{{config('app.base_url').$item->product['feature_image_path']}}" alt="" style="width: 50px;"><a href="{{route('detail.index',['id'=>$item->product->id])}}" style="color:black">{{$item->product->name}}</a> </td>
                             <td class="align-middle">{{number_format($item->product->price)}}</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
@@ -84,7 +76,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium ">Subtotal</h6>
-                            <h6 class="font-weight-medium subtotal">$150</h6>
+                            <h6 class="font-weight-medium subtotal"></h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Shipping</h6>
@@ -96,7 +88,7 @@
                             <h5 class="font-weight-bold total"></h5>
                             <h5 class="font-weight-bold totalPrice"></h5>
                         </div>
-                      <a href="{{route('checkout.index')}}"> <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button></a> 
+                       <button class="btn btn-block btn-primary my-3 py-3 checkout-btn">Proceed To Checkout</button>
                     </div>
                 </div>
             </div>
@@ -116,8 +108,49 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+function reCalculate() {
+    var total = 0;
+    $("tr").each(function() {
+        var checkbox = $(this).find('input[name="checkedtobuy"]');
+        if (checkbox.is(":checked")) {
+            var value = $(this).children().eq(4).text().replaceAll(',', '');
+            value = parseFloat(value);
+            if (!isNaN(value)) {
+                total += value;
+            }
+        }
+    });
+    $(".totalPrice").text(total.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.', ','));
+    $(".subtotal").text(total.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.', ','));
+    $(".total").text("Total (" + $('input[name="checkedtobuy"]:checked').length + " items):");
+}
+
+$('input[name="chekall"]').click(function() {
+    if($(this).is(":checked")) {
+        $('input[name="checkedtobuy"]').prop('checked', true);
+    } else {
+        $('input[name="checkedtobuy"]').prop('checked', false);
+    }
+    reCalculate();
+});
+
+$('input[name="checkedtobuy"]').change(function() {
+    reCalculate();
+});
+
+        $('.checkout-btn').click(function() {
+        var ids = [];
+        $('input[type="checkbox"]:checked').each(function() {
+            var id = $(this).parents("tr").attr("data-id");
+            if(id){
+                ids.push(id);
+
+            }
+        });
+        window.location.href = "{{route('checkout.index', ['ids'=> ''])}}" + ids.join(',');
+    });
    let subtotal = 0;
-$("tr").each(function() {
+    $("tr").each(function() {
     if($(this).children().eq(3).text()!="Total") {
         let value = $(this).children().eq(3).text().replaceAll(',','');
         value = parseFloat(value);
@@ -126,12 +159,12 @@ $("tr").each(function() {
         }
     }
 });
-$(".total").text("Total ("+parseInt(document.querySelectorAll('tr').length-1)+" items):");
+$(".total").text("Total (0 items):");
 $(".subtotal").text(subtotal.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.',','));
 $(".totalPrice").text(subtotal.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.',','));    
 
 
-        $(".plus1, .minus").click(function (e) {
+        $(".plus1, .minus").click(async function (e) {
     e.preventDefault();
     var ele=$(this);
 
@@ -144,7 +177,7 @@ $(".totalPrice").text(subtotal.toLocaleString('it-IT', {style : 'currency', curr
        
     }
 
-    $.ajax({
+   await $.ajax({
         url: '{{ route('cart.update') }}',
         method: "patch",
         data: {
@@ -153,16 +186,16 @@ $(".totalPrice").text(subtotal.toLocaleString('it-IT', {style : 'currency', curr
             quantity: quantity
         },
         success: function (response) {
-            window.location.reload();
+            //window.location.reload();
         }
     });
 });
-         $(".update-cart").change(function (e) {
+         $(".update-cart").change(async function (e) {
         e.preventDefault();
   
         var ele = $(this);
   
-        $.ajax({
+      await  $.ajax({
             url: '{{ route('cart.update') }}',
             method: "patch",
             data: {
@@ -171,7 +204,7 @@ $(".totalPrice").text(subtotal.toLocaleString('it-IT', {style : 'currency', curr
                 quantity: ele.val()
             },
             success: function (response) {
-               window.location.reload();
+             //  window.location.reload();
             }
         });
     });
@@ -190,11 +223,11 @@ $(".totalPrice").text(subtotal.toLocaleString('it-IT', {style : 'currency', curr
                 },
                 success: function (response) {
                     ele.parents("tr").remove();
-                    window.location.reload();
                 }
             });
         }
     });
+
     </script>
 
 @endsection

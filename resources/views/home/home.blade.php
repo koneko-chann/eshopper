@@ -221,12 +221,16 @@ $base_url = "http://localhost/test/public";
                 showConfirmButton: false,
                 timer: 1500
             });
+            
+        $('#cart-count').text(data.cartCount);
+       
         },
         error: function(error) {
             console.error('Error:', error);
         }
     });
 });
+
 </script>
 <!-- JavaScript Libraries -->
 @endsection

@@ -23,6 +23,8 @@
       </label>
     </div>
     <button type="submit" class="btn btn-primary">Sign in</button>
+    <br>
+    <a href="{{route('password.request')}}" class="btn btn-link">Forgot Your Password?</a>
   </form>
 </div>
   @endsection
