@@ -108,7 +108,7 @@ return [
     | localized telephone numbers, street address information and more.
     |
     */
-    'base_url' =>  'http://localhost/test/public/',
+    'base_url' =>  'http://pmmnm.test',
     'faker_locale' => 'en_US',
 
     /*
