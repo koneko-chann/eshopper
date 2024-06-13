@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "295871ddd192ba35e61a71d0ff6653f3",
+    "content-hash": "49b84670af1877d6cec1512ba2ba5ebb",
     "packages": [
         {
             "name": "brick/math",
@@ -502,6 +502,67 @@
                 }
             ],
             "time": "2023-10-12T05:21:21+00:00"
+        },
+        {
+            "name": "funnydevjsc/ninepay-laravel-integrate",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/funnydevjsc/ninepay-laravel-integrate.git",
+                "reference": "3cb0a2378e964640dfd0f27d9b133650ce087f7c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/funnydevjsc/ninepay-laravel-integrate/zipball/3cb0a2378e964640dfd0f27d9b133650ce087f7c",
+                "reference": "3cb0a2378e964640dfd0f27d9b133650ce087f7c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "illuminate/http": "^8.83",
+                "illuminate/routing": "^8.83",
+                "illuminate/support": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "FunnyDev\\Ninepay\\NinepayServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "FunnyDev\\Ninepay\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Funny dev., Jsc",
+                    "email": "contact@funnydev.vn",
+                    "homepage": "https://github.com/funnydevjsc"
+                }
+            ],
+            "description": "Laravel package for 9pay.vn",
+            "homepage": "https://github.com/funnydevjsc/ninepay-laravel-integrate",
+            "keywords": [
+                "9pay",
+                "laravel",
+                "ninepay",
+                "package",
+                "payment"
+            ],
+            "support": {
+                "issues": "https://github.com/funnydevjsc/ninepay-laravel-integrate/issues",
+                "source": "https://github.com/funnydevjsc/ninepay-laravel-integrate/tree/v1.0.1"
+            },
+            "time": "2024-05-13T08:23:07+00:00"
         },
         {
             "name": "graham-campbell/result-type",

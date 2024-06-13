@@ -10,7 +10,7 @@ $base_url = "http://localhost/test/public";
             @foreach($sliders as $slider)
 
             <div class="carousel-item {{$slider->active?'active':''}}" style="height: 410px;">
-                <img class="img-fluid" src="{{$base_url.$slider['image_path']}}" alt="Image">
+                <img class="img-fluid" src="{{config('app.base_url').$slider['image_path']}}" alt="Image">
                 <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                     <div class="p-3" style="max-width: 700px;">
                         <h4 class="text-light text-uppercase font-weight-medium mb-3">{{$slider['name']}}</h4>

@@ -9,8 +9,10 @@ use App\Http\Controllers\{
     DetailController,
     CheckoutController,
     FlashSaleController,
-    UserController
+    UserController,
+    PaymentController
 };
+use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -81,5 +83,5 @@ Route::get('/reset-password/{token}', function (string $token) {
     return view('auth.passwords.reset', ['token' => $token]);
 })->middleware('guest')->name('password.reset');
 Route::post('/reset-password',[LoginController::class,'confirmPassword'])->middleware('guest')->name('password.update');
-
 Route::get('/flashsales', [FlashSaleController::class,'index'])->name('flashsales.index');
+Route::get('/vnpay/payment-return', [CheckoutController::class, 'vnpayReturn'])->name('payment.vnpay.return');

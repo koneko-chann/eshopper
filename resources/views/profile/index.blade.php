@@ -67,42 +67,55 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script>
-    const host = "https://provinces.open-api.vn/api/";
+    const host = "https://vapi.vnappmob.com/api/province";
 var callAPI = (api) => {
     return axios.get(api)
         .then((response) => {
-            renderData(response.data, "city");
+       let  data=renderData(response.data.results, "city");
+       console.log(response);
         });
 }
-callAPI('https://provinces.open-api.vn/api/?depth=1');
+callAPI(host);
 var callApiDistrict = (api) => {
     return axios.get(api)
         .then((response) => {
-            renderData(response.data.districts, "district");
+            renderDistrictData(response.data.results, "district");
         });
 }
 var callApiWard = (api) => {
     return axios.get(api)
         .then((response) => {
-            renderData(response.data.wards, "ward");
+            renderWarddata(response.data.results, "ward");
         });
 }
 
 var renderData = (array, select) => {
     let row = ' <option disable value="">Chọn</option>';
     array.forEach(element => {
-        
-        row += `<option data-id="${element.code}" value="${element.name}">${element.name}</option>`
+        row += `<option data-id="${element.province_id}" value="${element.province_name}">${element.province_name}</option>`
     });
     document.querySelector("#" + select).innerHTML = row
 }
-
+var renderDistrictData=(array,select)=>{
+    let row = ' <option disable value="">Chọn</option>';
+    array.forEach(element => {
+        row += `<option data-id="${element.district_id}" value="${element.district_name}">${element.district_name}</option>`
+    });
+    document.querySelector("#" + select).innerHTML = row
+}
+var renderWarddata=(array,select)=>{
+    let row = ' <option disable value="">Chọn</option>';
+    array.forEach(element => {
+        row += `<option data-id="${element.ward_id}" value="${element.ward_name}">${element.ward_name}</option>`
+    });
+    document.querySelector("#" + select).innerHTML = row
+}
 $("#city").change(() => {
-    callApiDistrict(host + "p/" + $("#city").find(':selected').data('id') + "?depth=2");
+    callApiDistrict(host + "/district/" + $("#city").find(':selected').data('id'));
     
 });
 $("#district").change(() => {
-    callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2");
+    callApiWard(host + "/ward/" + $("#district").find(':selected').data('id'));
     printResult();
 });
 $("#ward").change(() => {
@@ -121,11 +134,11 @@ var street=parts[3];
     var selectElement = document.getElementById('city');
     var valueToSelect = city;
     selectElement.value = valueToSelect;
-    await callApiDistrict(host + "p/" + $("#city").find(':selected').data('id') + "?depth=2");
+    await callApiDistrict(host + "/district/" + $("#city").find(':selected').data('id'));
     var selectElement = document.getElementById('district');
     var valueToSelect = district;
     selectElement.value = valueToSelect;
-   await  callApiWard(host + "d/" + $("#district").find(':selected').data('id') + "?depth=2");
+   await  callApiWard(host + "/ward/" + $("#district").find(':selected').data('id'));
     var selectElement = document.getElementById('ward');
     var valueToSelect = ward;
     selectElement.value = valueToSelect;

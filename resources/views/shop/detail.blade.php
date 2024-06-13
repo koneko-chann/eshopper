@@ -149,7 +149,12 @@ foreach($comments as $comment) {
                     @endfor
                 </div>
             </div>
-            <h3 class="font-weight-semi-bold mb-4">{!!number_format($product['price'])!!} đ</h3>
+            <h3 class="font-weight-semi-bold mb-4">{!!number_format($product['new_price']??$product['price'])!!} đ</h3>
+            @if($product['new_price'])
+            <h5 class="font-weight-semi-bold mb-4">Discount remain in: <span style="color:red;">{{$product['quantity_remain_discount']}}</span><span class="font-weight-semi-bold mb-4"> products</span></h5>
+            @else
+            <h5 class="font-weight-semi-bold mb-4">Availibility: {{$product['quantity']}}<span class="text-muted">products</span></h5>
+            @endif
             <p class="mb-4">{!!$product['description']!!}</p>
             <div class="d-flex mb-3">
             
@@ -338,6 +343,18 @@ foreach($comments as $comment) {
     })
     .then(response => response.json())
     .then(data => {
+        if(data.error){
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "error",
+                                width: 300,
+                                height: 50,
+                                title: data.error,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            return;
+                        }
         Swal.fire({
   position: "top-end",
   icon: "success",

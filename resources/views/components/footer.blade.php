@@ -5,7 +5,7 @@
             <a href="" class="text-decoration-none">
                 <h1 class="mb-4 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border border-white px-3 mr-1">G1</span>KNC</h1>
             </a>
-            <p>Bài tập lớn mã nguồn mở Laravel do nhóm 1 thực hiện</p>
+            <p>Đồ án tốt nghiệp</p>
             <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Trường Đại Học Công Nghiệp Hà Nội-Khoa CNTT</p>
             <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>huycoixvb@gmail.com</p>
             <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
@@ -45,7 +45,7 @@
         <div class="col-md-6 px-xl-0">
             <p class="mb-md-0 text-center text-md-left text-dark">
                 &copy; <a class="text-dark font-weight-semi-bold" href="#">G1-KNC</a>. All Rights Reserved. Designed
-                by Huy
+                by ThemeWagon
                 <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a><br>
                 Distributed By <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
             </p>

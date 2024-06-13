@@ -35,29 +35,43 @@
                     <tbody class="align-middle"  id="cart">
                     @if($carts!=null)
                         @foreach($carts as $item)
-                        <tr data-id="{{$item['id']}}" >
-                            <td class="align-middle"><input type="checkbox" name="checkedtobuy"></td>
-                            <td class="align-middle"><img src="{{config('app.base_url').$item->product['feature_image_path']}}" alt="" style="width: 50px;"><a href="{{route('detail.index',['id'=>$item->product->id])}}" style="color:black">{{$item->product->name}}</a> </td>
-                            <td class="align-middle">{{number_format($item->product->price)}}</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn minus" >
-                                        <button class="btn btn-sm btn-primary btn-minus quantity" >
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary text-center update-cart"  value="{{$item->quantity}}">
-                                    
-                                    <div class="input-group-btn plus1" >
-                                        <button class="btn btn-sm btn-primary btn-plus " >
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="align-middle">{{number_format($item->quantity*$item->product->price)}}</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary remove-from-cart"><i class="fa fa-times"></i></button></td>
-                        </tr>
+                       <!-- Phần HTML của bạn không thay đổi nhiều -->
+<tr data-id="{{$item['id']}}">
+    <td class="align-middle"><input type="checkbox" name="checkedtobuy"></td>
+    <td class="align-middle"><img src="{{config('app.base_url').$item->product['feature_image_path']}}" alt="" style="width: 50px;"><a href="{{route('detail.index',['id'=>$item->product->id])}}" style="color:black">{{$item->product->name}}</a></td>
+    <td class="align-middle">{{number_format($item->product->new_price??$item->product->price)}}</td>
+    <td class="align-middle">
+        <div class="input-group quantity mx-auto" style="width: 100px;">
+            <div class="input-group-btn minus">
+                <button class="btn btn-sm btn-primary btn-minus quantity">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+            <input type="text" class="form-control form-control-sm bg-secondary text-center update-cart" value="{{$item->quantity}}">
+            <div class="input-group-btn plus1">
+                <button class="btn btn-sm btn-primary btn-plus">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="error-message text-danger" style="display:none;"></div>
+    </td>
+    @php
+    $quantity = $item->quantity;
+    $new_price = $item->product->new_price ?? $item->product->price;
+    $price = $item->product->price;
+    $quantity_remain_discount = $item->product->quantity_remain_discount;
+
+    if ($quantity > $quantity_remain_discount) {
+        $total_price = $quantity_remain_discount * $new_price + $price * ($quantity - $quantity_remain_discount);
+    } else {
+        $total_price = $quantity * $new_price;
+    }
+@endphp
+    <td class="align-middle">{{ number_format($total_price) }}</td>
+    <td class="align-middle"><button class="btn btn-sm btn-primary remove-from-cart"><i class="fa fa-times"></i></button></td>
+</tr>
+
                        @endforeach
                     @endif
                     </tbody>
@@ -88,7 +102,7 @@
                             <h5 class="font-weight-bold total"></h5>
                             <h5 class="font-weight-bold totalPrice"></h5>
                         </div>
-                       <button class="btn btn-block btn-primary my-3 py-3 checkout-btn">Proceed To Checkout</button>
+                       <button class="btn btn-block btn-primary my-3 py-3 checkout-btn" >Proceed To Checkout</button>
                     </div>
                 </div>
             </div>
@@ -108,111 +122,150 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-function reCalculate() {
-    var total = 0;
-    $("tr").each(function() {
-        var checkbox = $(this).find('input[name="checkedtobuy"]');
-        if (checkbox.is(":checked")) {
-            var value = $(this).children().eq(4).text().replaceAll(',', '');
-            value = parseFloat(value);
-            if (!isNaN(value)) {
-                total += value;
+$(document).ready(function() {
+    var carts = Array.from({ length: {{$carts->count()}} }, () => true);
+    function reCalculate() {
+        var total = 0;
+        $("tr").each(function() {
+            var checkbox = $(this).find('input[name="checkedtobuy"]');
+            if (checkbox.is(":checked")) {
+                var value = $(this).children().eq(4).text().replaceAll(',', '');
+                value = parseFloat(value);
+                if (!isNaN(value)) {
+                    total += value;
+                }
             }
-        }
-    });
-    $(".totalPrice").text(total.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.', ','));
-    $(".subtotal").text(total.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.', ','));
-    $(".total").text("Total (" + $('input[name="checkedtobuy"]:checked').length + " items):");
-}
-
-$('input[name="chekall"]').click(function() {
-    if($(this).is(":checked")) {
-        $('input[name="checkedtobuy"]').prop('checked', true);
-    } else {
-        $('input[name="checkedtobuy"]').prop('checked', false);
+        });
+        $(".totalPrice").text(total.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.', ','));
+        $(".subtotal").text(total.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.', ','));
+        $(".total").text("Total (" + $('input[name="checkedtobuy"]:checked').length + " items):");
     }
-    reCalculate();
-});
 
-$('input[name="checkedtobuy"]').change(function() {
-    reCalculate();
-});
+    $('input[name="chekall"]').click(function() {
+        if($(this).is(":checked")) {
+            $('input[name="checkedtobuy"]').prop('checked', true);
+        } else {
+            $('input[name="checkedtobuy"]').prop('checked', false);
+        }
+        reCalculate();
+    });
 
-        $('.checkout-btn').click(function() {
+    $('input[name="checkedtobuy"]').change(function() {
+        reCalculate();
+    });
+
+    $('.checkout-btn').click(function() {
         var ids = [];
         $('input[type="checkbox"]:checked').each(function() {
             var id = $(this).parents("tr").attr("data-id");
             if(id){
                 ids.push(id);
-
             }
         });
         window.location.href = "{{route('checkout.index', ['ids'=> ''])}}" + ids.join(',');
     });
-   let subtotal = 0;
+
+    let subtotal = 0;
     $("tr").each(function() {
-    if($(this).children().eq(3).text()!="Total") {
-        let value = $(this).children().eq(3).text().replaceAll(',','');
-        value = parseFloat(value);
-        if (!isNaN(value)) {
-            subtotal += value;
-        }
-    }
-});
-$(".total").text("Total (0 items):");
-$(".subtotal").text(subtotal.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.',','));
-$(".totalPrice").text(subtotal.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.',','));    
-
-
-        $(".plus1, .minus").click(async function (e) {
-    e.preventDefault();
-    var ele=$(this);
-
-    if ($(this).hasClass('plus1')) {
-       quantity= $(this).parents("tr").find(".update-cart").val();
-       
-        
-    }  if ($(this).hasClass('minus')) {
-      quantity=  $(this).parents("tr").find(".update-cart").val();
-       
-    }
-
-   await $.ajax({
-        url: '{{ route('cart.update') }}',
-        method: "patch",
-        data: {
-            _token: '{{ csrf_token() }}', 
-            id: ele.parents("tr").attr("data-id"), 
-            quantity: quantity
-        },
-        success: function (response) {
-            //window.location.reload();
+        if($(this).children().eq(3).text() != "Total") {
+            let value = $(this).children().eq(3).text().replaceAll(',','');
+            value = parseFloat(value);
+            if (!isNaN(value)) {
+                subtotal += value;
+            }
         }
     });
-});
-         $(".update-cart").change(async function (e) {
+    $(".total").text("Total (0 items):");
+    $(".subtotal").text(subtotal.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.',','));
+    $(".totalPrice").text(subtotal.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}).replaceAll('.',','));
+
+    $(".plus1, .minus").click(async function (e) {
         e.preventDefault();
-  
         var ele = $(this);
-  
-      await  $.ajax({
+        var quantity = ele.parents("tr").find(".update-cart").val();
+
+        if (ele.hasClass('plus1')) {
+            quantity++;
+        } else if (ele.hasClass('minus')) {
+            quantity--;
+        }
+        await $.ajax({
             url: '{{ route('cart.update') }}',
             method: "patch",
             data: {
                 _token: '{{ csrf_token() }}', 
                 id: ele.parents("tr").attr("data-id"), 
-                quantity: ele.val()
+                quantity: quantity
             },
             success: function (response) {
-             //  window.location.reload();
+                if (response.error) {
+                    var errorMessage = ele.parents("tr").find(".error-message");
+                    errorMessage.text('Số lượng vượt quá giới hạn: ' + response.max_quantity).show();
+                    carts[ele.parents("tr").index()] = false;
+                    console.log(carts);
+                    if(carts.includes(false)){
+                        $('.checkout-btn').attr('disabled', true);
+                    } else {
+                        $('.checkout-btn').attr('disabled', false);
+                    }
+                } else {
+                    reCalculate();
+                    ele.parents("tr").find(".error-message").hide();
+                    carts[ele.parents("tr").index()] = true;
+                    if(carts.includes(false)){
+                        $('.checkout-btn').attr('disabled', true);
+                    } else {
+                        $('.checkout-btn').attr('disabled', false);
+                    }
+
+                }
             }
         });
     });
-       $(".remove-from-cart").click(function (e) {
+
+    $(".update-cart").change(async function (e) {
         e.preventDefault();
-  
         var ele = $(this);
-  
+        var quantity = ele.val();
+       
+        await $.ajax({
+            url: '{{ route('cart.update') }}',
+            method: "patch",
+            data: {
+                _token: '{{ csrf_token() }}', 
+                id: ele.parents("tr").attr("data-id"), 
+                quantity: quantity
+            },
+            success: function (response) {
+                if (response.error) {
+                    var errorMessage = ele.parents("tr").find(".error-message");
+                    errorMessage.text('Số lượng vượt quá giới hạn: ' + response.max_quantity).show();
+                    
+                    cart[ele.parents("tr").index()] = false;
+                    if(cart.includes(false)){
+                        $('.checkout-btn').attr('disabled', true);
+                    } else {
+                        $('.checkout-btn').attr('disabled', false);
+                    }
+                } else {
+                    reCalculate();
+                    ele.parents("tr").find(".error-message").hide();
+                    cart[ele.parents("tr").index()] = true;
+                    
+                    if(cart.includes(false)){
+                        $('.checkout-btn').attr('disabled', true);
+                    } else {
+                        $('.checkout-btn').attr('disabled', false);
+                    }
+                }
+            }
+        });
+    });
+
+    $(".remove-from-cart").click(function (e) {
+        e.preventDefault();
+        var ele = $(this);
+
         if(confirm("Are you sure want to remove?")) {
             $.ajax({
                 url: '{{ route('cart.remove') }}',
@@ -223,10 +276,12 @@ $(".totalPrice").text(subtotal.toLocaleString('it-IT', {style : 'currency', curr
                 },
                 success: function (response) {
                     ele.parents("tr").remove();
+                    reCalculate();
                 }
             });
         }
     });
+});
 
     </script>
 

@@ -106,13 +106,19 @@ $base_url = "http://localhost/test/public";
         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
             <div class="card product-item border-0 mb-4">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <img class="img-fluid w-100" src="{{$base_url.$product->feature_image_path}}" alt="">
+                    <img class="img-fluid w-100" src="{{config('app.base_url').$product->feature_image_path}}" alt="">
                 </div>
                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                     <h6 class="text-truncate mb-3">{{$product['name']}}</h6>
                     <div class="d-flex justify-content-center">
-                        <h6>{{number_format($product['price'])}} VNĐ</h6>
-                        <h6 class="text-muted ml-2"><del>{{number_format($product['price'])}} VNĐ</del></h6>
+                        @if($product['new_price'])
+                        <h6>{{ number_format($product['new_price']) }}</h6>
+                        <h6 class="text-muted ml-2">
+                            <del>{{ number_format($product['price']) }}</del>
+                        </h6>
+                        @else
+                        <h6>{{ number_format($product['price']) }}</h6>
+                        @endif
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between bg-light border">
@@ -162,7 +168,7 @@ $base_url = "http://localhost/test/public";
         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
             <div class="card product-item border-0 mb-4">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <img class="img-fluid w-100" src="{{$base_url.$product['feature_image_path']}}" alt="">
+                    <img class="img-fluid w-100" src="{{config('app.base_url').$product['feature_image_path']}}" alt="">
                 </div>
                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                     <h6 class="text-truncate mb-3">{{$product['name']}}</h6>
@@ -212,6 +218,18 @@ $base_url = "http://localhost/test/public";
         url: url,
         type: 'GET',
         success: function(data) {
+            if(data.error){
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "error",
+                                width: 300,
+                                height: 50,
+                                title: data.error,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            return;
+                        }
             Swal.fire({
                 position: "top-end",
                 icon: "success",
@@ -232,5 +250,4 @@ $base_url = "http://localhost/test/public";
 });
 
 </script>
-<!-- JavaScript Libraries -->
 @endsection

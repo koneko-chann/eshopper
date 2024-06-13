@@ -44,6 +44,7 @@
                                 $product = $item->product;
                                 $status = $order['status'];
                             @endphp
+                            @if($product)
                             <tr style="color: black">
                                 <td class="align-middle">
                                     <img src="{{ config('app.base_url') . $product['feature_image_path'] }}" alt="" style="width: 50px;">
@@ -69,6 +70,7 @@
                                     </button>
                                 </td>
                             </tr>
+                            @endif
                         @endforeach
                     @endforeach
                 @endif

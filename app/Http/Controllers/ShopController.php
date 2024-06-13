@@ -29,8 +29,6 @@ class ShopController extends Controller
         } else {
             $products = $products->paginate(9);
         }
-
-
         return view('shop.shop', compact('categories', 'products'));
     }
     public function search(Request $request)

@@ -80,9 +80,7 @@ class LoginController extends Controller
                 $user->forceFill([
                     'password' => Hash::make($password)
                 ])->setRememberToken(Str::random(60));
-     
                 $user->save();
-     
                 event(new PasswordReset($user));
             }
         );

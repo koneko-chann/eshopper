@@ -28,6 +28,7 @@ class UserController extends Controller
         $categories = Category::all();
         $user = auth()->user();
         $orders = $user->orders->take(10);
+        //dd($orders[1]->orderItems);
         return view('profile.orders',compact('categories','user','orders'));
     }
     public function rating(Request $request,$id){
